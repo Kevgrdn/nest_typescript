@@ -15,7 +15,8 @@ export class TodoList {
 
     @OneToMany(() => Todo, (todo) => todo.todolist, {
         onDelete: "CASCADE",
-        cascade:["remove", "insert", "update"]
+        cascade:["remove", "insert", "update"],
+        eager: true
     })
     todos: Todo[]
 }

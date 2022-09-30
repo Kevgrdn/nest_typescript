@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTodoDto } from './dto/create-todo.dto';
+import { CreateTodoListDto } from './dto/create-todolist.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import {InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
@@ -16,8 +16,8 @@ export class TodosService {
   )
   {}
 
-  create(createTodoDto: CreateTodoDto) {
-    return 'This action adds a new todo';
+  create(createTodListDto: CreateTodoListDto): Promise<TodoList> {
+    return this.todolistRepository.save(this.todolistRepository.create(createTodListDto));
   }
 
   findAll():Promise<TodoList[]> {
@@ -25,7 +25,9 @@ export class TodosService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} todo`;
+    return this.todolistRepository.findOne({
+      where: {id}, 
+      relations: {todos: true}});
   }
 
   update(id: number, updateTodoDto: UpdateTodoDto) {
